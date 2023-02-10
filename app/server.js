@@ -3,6 +3,8 @@
 // const express = require("express");
 const http = require("http");
 const path = require("path");
+// step 26 : import routere asli 
+const { allRoutes } = require("./router/router");
 
 
 // step 2 : create constructor
@@ -35,15 +37,18 @@ module.exports = class Application {
   createServer(PORT) {
     // step 8 : create http server
     const server = http.createServer(this.#app);
-    server.listen(PORT, () => console.log(`server runed on port :${PORT}`));
+    server.listen(PORT, () => console.log(`server runed on poort :${PORT}`));
   }
   createRoutes() {
     // step 10 : create route
+    // in vase safheie asli
     this.#app.get("/", (req, res, next) => {
       return res.json({
-        message: "this is a new express applications",
+        message: "this is a neww express applications",
       });
     });
+    // step 27 :
+    this.#app.use(allRoutes)
   }
   errorHndler() {
     // step 6 : create endpoint for error 404

@@ -1,0 +1,5 @@
+// step 23 : import express router and create user router
+const express = require('express')
+const router = express.Router();
+
+module.exports = {userRoutes : router}
