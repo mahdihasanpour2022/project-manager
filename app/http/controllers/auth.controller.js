@@ -3,10 +3,14 @@
 // b sotate object oriented kar mikonim va methodhaie to in controller ha ro b router ha moarefi mikonim
 // baraie auth model yek controller misazim ba hamon nam
 
+const { registerValidator } = require("../validations/authValidation");
+
 class AuthController {
   // step 29 : create method bar asase oop (object oriented programing) iani ba class
-  register() {
-
+  // vaghti vorodihat shamele ( req / res / next ) ye middleware mamolie ba req shoma joiate darkhste karbar mesle body ro darin
+  register(req, res, next) {
+    // const { userName, email, password, mobile } = req.body;
+    return res.json(registerValidator(req.body));
   }
   login() {
 
