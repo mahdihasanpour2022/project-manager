@@ -1,4 +1,3 @@
-
 // step 1 : import commonjs packajes
 // const express = require("express");
 const http = require("http");
@@ -6,17 +5,16 @@ const path = require("path");
 // step 26 : import routere asli 
 const { allRoutes } = require("./router/router");
 
-
 // step 2 : create constructor
 module.exports = class Application {
   #express = require("express");
   #app = this.#express();
   constructor(PORT, DB_URL) {
-    // step 4 : call the methods
+    // step 4 : call the methods tartibesh mohemme masalan hatman erroHandler bad az createRoutes bashe
     this.configDatabase(DB_URL);
     this.configApplication();
-    this.createServer(PORT);
     this.createRoutes();
+    this.createServer(PORT);
     this.errorHndler();
   }
   // step 3 : create methods for config the proj
@@ -48,7 +46,17 @@ module.exports = class Application {
       });
     });
     // step 27 :
-    this.#app.use(allRoutes)
+    // az try catch estefade kon k age b error khord error ro next kone
+    // va dar vorodi hatman err ro ham kenare req , res , next vared kon k ye middleware kamel beshe va age err dashti 404 kar kone age error dashti
+    // iani tamame route ah dar allRoutes miad va ejra mishe age b har dalili b error khord on error ro next mikone masalan 404
+    // this.#app.use(allRoutes)
+    this.#app.use((err, req, res, next) => {
+      try {
+        this.#app.use(allRoutes)
+      } catch (error) {
+        next(error)
+      }
+    })
   }
   errorHndler() {
     // step 6 : create endpoint for error 404
