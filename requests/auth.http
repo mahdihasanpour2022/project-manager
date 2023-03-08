@@ -1,11 +1,11 @@
-###register request
-
+### step 49: register request hamishe beine header va body ye khat fasele bzar
 Post http://localhost:3000/auth/register
+Content-Type: application/json
 
 {
-  "userName" : "",
-  "email" : "",,
-  "mobile" : ""
-  "password" : "",
-  "confirm_password" : "",
+  "userName" :"sdf" ,
+  "email" :"mehdi1@gmail.com" ,
+  "mobile" :"09217101701" ,
+  "password" : "123456",
+  "confirm_password" :"123456" 
 }

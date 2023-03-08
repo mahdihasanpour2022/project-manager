@@ -1,4 +1,6 @@
-// step 1 : import commonjs packajes
+// step 0 : import commonjs packajes => install mongodb and run it
+
+//step 1 :  import commonjs packajes
 // const express = require("express");
 const http = require("http");
 const path = require("path");
@@ -15,17 +17,24 @@ module.exports = class Application {
     this.configApplication();
     this.createRoutes();
     this.createServer(PORT);
-    this.errorHndler();
+    this.errorHandler();
   }
   // step 3 : create methods for config the proj
-  configDatabase(DB_URL) {
-    // step 5 : connect to DB
+
+  configDatabase(DB_URL){
     const mongoose = require("mongoose");
+    mongoose.set('strictQuery', true);
     mongoose.connect(DB_URL, (error) => {
-      if (error) throw error;
-      return console.log("successfully connected to DB ... ");
-    });
-  }
+        // if(error) throw error ;
+        if(error ){
+          console.log("error ------------------->" , error)
+          return true ;
+        }
+        return console.log("mongoose Connected to mongoDB successfully ...")
+    })
+}
+
+
   configApplication() {
     // step 9 : config application
     this.#app.use(this.#express.json());
@@ -35,7 +44,7 @@ module.exports = class Application {
   createServer(PORT) {
     // step 8 : create http server
     const server = http.createServer(this.#app);
-    server.listen(PORT, () => console.log(`server runed on poort :${PORT}`));
+    server.listen(PORT, () => console.log(`server runed on poooooooooort :${PORT}`));
   }
   createRoutes() {
     // step 10 : create route
@@ -49,16 +58,9 @@ module.exports = class Application {
     // az try catch estefade kon k age b error khord error ro next kone
     // va dar vorodi hatman err ro ham kenare req , res , next vared kon k ye middleware kamel beshe va age err dashti 404 kar kone age error dashti
     // iani tamame route ah dar allRoutes miad va ejra mishe age b har dalili b error khord on error ro next mikone masalan 404
-    // this.#app.use(allRoutes)
-    this.#app.use((err, req, res, next) => {
-      try {
-        this.#app.use(allRoutes)
-      } catch (error) {
-        next(error)
-      }
-    })
+    this.#app.use(allRoutes)
   }
-  errorHndler() {
+  errorHandler() {
     // step 6 : create endpoint for error 404
     this.#app.use((req, res, next) => {
       return res.status(404).json({

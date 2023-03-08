@@ -3,10 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 const { AuthController } = require('../http/controllers/auth.controller');
+const { expressValidatorMapper } = require('../http/middlewares/checkErrors');
 const { registerValidator } = require('../http/validations/authValidation');
 
 // step 41 : estefade az function 
-router.post("./register", registerValidator(), AuthController.register)
+// step 48 : add expressValidatorMapper
+router.post("/register", registerValidator(),expressValidatorMapper , AuthController.register)
 
 module.exports = { authRoutes: router }
 

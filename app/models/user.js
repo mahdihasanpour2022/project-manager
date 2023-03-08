@@ -9,15 +9,17 @@ const userSchema = new mongoose.Schema(
     // require  meand that neccessary
     //default iani meghdare pish farz vasash bzar
     //onaie k ghabele edit hastand nabaiad uniq bashand
-    userName: { type: string, required: true, unique: true },
-    firstName: { type: string },
-    lastName: { type: string },
-    email: { type: string, required: true, unique: true },
-    password: { type: string, required: true },
-    mobile: { type: string, required: true, unique: true },
-    team: { type: string, default: [] },
-    skills: { type: string, default: [] },
-    roles: { type: string, default: ["USERS"] }, // kolan maghadire pishfarzo baiad bozorg benevisi esmesho
+    //string na string (pascal)
+
+    userName: { type: String, required: true, unique: true },
+    firstName: { type: String },
+    lastName: { type: String },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    mobile: { type: String, required: true, unique: true },
+    team: { type: [String], default: [] },
+    skills: { type: [String], default: [] },
+    roles: { type: [String], default: ["USERS"] }, // kolan maghadire pishfarzo baiad bozorg benevisi esmesho
 
     // gereftan akharin tarikhe viraieshe kala
   },
