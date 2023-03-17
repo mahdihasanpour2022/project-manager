@@ -17,57 +17,80 @@ function registerValidator() {
   // or write validate cusom validate...
   //custom : customizesh mikonim onjori k mikhaim =>ye callback functione ke 2 ta vorodi dare value va context
   return [
-    body("userName").custom(async (value , ctx) => {
+    body("userName").custom(async (value, ctx) => {
       if (value) {
         // dar regex \_\. iani noghte ya _ ham mitone dashte bashe => ^ iani ba harfe latin shoro beshe  => + iani hadaghal baiad ye harfe latin avalesh bash
-        const usernameRegex = /^[a-z]+[a-z0-9\_\.]{2,25}/gi;
-        if (usernameRegex.test(value)) {
-          const userUserName = await userModel.findOne({ userName :value});
-          if (userUserName) throw "username tekrarie";
+        const userNameRegex = /^[a-z]+[a-z0-9\_\.]{2,}/gi;
+        if (userNameRegex.test(value)) {
+          const user = await userModel.findOne({ userName: value });
+          if (user) throw "userName tekrarie";
           return true;
         }
         throw "userName not correct";
-      }else{
+      } else {
         throw "name is empty";
       }
     }),
     //not().isEmail() iani agar isEmail false shod in withMessage ro bede ...
     body("email")
-      .custom(async (email) => {
-        const userEmail = await userModel.findOne({ email });
-        if (userEmail) throw "email tekrarie";
-        return true;
-      })
+    .custom(async email => {
+      const user = await userModel.findOne({ email });
+      if (user) throw "email tekrarie";
+      return true;
+    })
       .isEmail()
-      .withMessage("email is not valid ...")
-      .notEmpty()
-      .withMessage("email is empty"),
+      .withMessage("email is not valid ..."),
     // fa-IR iani male iran bashe agar nabod ba withMessage bge behesh khata ro
     body("mobile")
-      .custom(async (mobile) => {
-        const userMobile = await userModel.findOne({ mobile });
-        if (userMobile) throw "mobile tekrarie";
-        return true;
-      })
-      .isMobilePhone("fa-IR")
-      .withMessage("number is not irani")
-      .notEmpty()
-      .withMessage("mobile is empty"),
+    .custom(async mobile => {
+      const user = await userModel.findOne({ mobile });
+      if (user) throw "mobile tekrarie";
+      return true;
+    })
+    .isMobilePhone("fa-IR")
+    .withMessage("number is not irani")
+      ,
     body("password")
+    .isLength({ min: 6, max: 16 })
+    .withMessage("hadaghal 6 va hadaksar 16 nist")
       // chon error ha ro az akhar mikhone hamishe mohemtarinasho khate akhar benvis
       .custom((value, ctx) => {
         if (value) {
+          // if(!value) throw 'confirm password is empty';
           if (value !== ctx?.req?.body?.confirm_password)
             throw "password not match with confirm pass";
           return true;
         }
         throw "password ye moshkeli dare";
       })
-      .isLength({ min: 6, max: 16 })
-      .withMessage("hadaghal 6 va hadaksar 16 nist")
+  ];
+}
+// step 51 : create loginValidator
+function loginValidator() {
+  return [
+    body("userName")
       .notEmpty()
-      .withMessage("password is empty"),
+      .withMessage("userName khalie")
+      .custom((userName) => {
+        const userNameRegex = /^[a-z]+[a-z0-9\_\.]{2,25}/gi;
+        if (userNameRegex.test(userName)) {
+          return true;
+          // or ...
+          // const useruserName = await userModel.findOne({ userName });
+          // if (!useruserName) throw "نام کاربری یا رمز عبور اشتباه است.";
+          // return true;
+        }
+        throw "نام کاربری صحیح نیست.";
+      }),
+    body("password")
+      .isLength({ min: 6, max: 16 })
+      .withMessage("tolesh moshkel dare"),
+    // or ...
+    // .custom(password=>{
+    //   const userPassword= await userModel.findOne({ password });
+    //   if(!userPassword) throw "نام کاربری یا رمز عبور اشتباه است";
+    // })
   ];
 }
 
-module.exports = { registerValidator };
+module.exports = { registerValidator, loginValidator };

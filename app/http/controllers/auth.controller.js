@@ -4,8 +4,8 @@
 // baraie auth model yek controller misazim ba hamon nam
 
 const { userModel } = require("../../models/user");
-const { hashString } = require("../../modules/functions");
-
+const { hashString, tokenGenerator } = require("../../modules/functions");
+const  bcrypt  = require("bcrypt");
 class AuthController {
   // step 29 : create method bar asase oop (object oriented programing) iani ba class
   // vaghti vorodihat shamele ( req / res / next ) ye middleware mamolie ba req shoma joiate darkhste karbar mesle body ro darin
@@ -17,20 +17,21 @@ class AuthController {
       // STEP 45: HASH PASSWORD
       const hash_Password = hashString(password);
       // step 46 : ijade user az usermodel
-      const user = await userModel.create({
-        userName,
+      const user = await userModel
+        .create({
+          userName,
           email,
           password: hash_Password,
           mobile,
         })
-        // step 47 : ijade catch bedone try injorie catch((err)=>{})      na    catch(err){}
+        // step 47 : ijade catch bedone try injorie catch((err)=>{})    na    catch(err){}
         .catch((err) => {
-          // console.log(JSON.stringify(err , null , 2));
+          // console.log(JSON.stringify(err, null, 2));
           // console.log(err)
-          if (err?.code === 11000){
+          if (err?.code === 11000) {
             throw {
               status: 400,
-              message: "ye meghdare gheire uniq va tekrari dar body hast",
+              message: `یکی از موارد قبلا در سیستم استفاده شده است ${err} `,
             };
           }
         });
@@ -39,7 +40,29 @@ class AuthController {
       next(err);
     }
   }
-  login() {}
+
+  // step 52 :
+  async login(req, res, next) {
+    try {
+      const { userName, password } = req.body;
+      const user = await userModel.findOne({ userName });
+      if (!user) throw { status: 401, message: "نام کاربری یا رمز عبور اشتباه است ." };
+      // jahate moghaiese do meghdar chon hash shode nemishe sade moghaiese kard
+
+      // step 57 : create token with userName payload k hamishe sabete va tamam nemishe
+      const compareResult = bcrypt.compareSync(password, user.password);
+      if (!compareResult) throw { status: 401, message: "نام کاربری یا رمز عبور اشتباه است ." };
+      return res.status(200).json({
+        status: 200 ,
+        success: true ,
+        message: "شما با موفقیت وارد حساب کاربری خود شدید" ,
+        token : ''
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   resetPassword() {}
 }
 // way 1 : module.exports = {AuthController}

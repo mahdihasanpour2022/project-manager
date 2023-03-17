@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     team: { type: [String], default: [] },
     skills: { type: [String], default: [] },
     roles: { type: [String], default: ["USERS"] }, // kolan maghadire pishfarzo baiad bozorg benevisi esmesho
-
+    token: { type: String, default: "" },
     // gereftan akharin tarikhe viraieshe kala
   },
   { timestamps: true }

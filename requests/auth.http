@@ -3,9 +3,18 @@ Post http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-  "userName" :"sdf" ,
-  "email" :"mehdi1@gmail.com" ,
-  "mobile" :"09217101701" ,
-  "password" : "123456",
-  "confirm_password" :"123456" 
+  "userName" :"ehsan1" ,
+  "email" :"ehsan1@google.com" ,
+  "mobile" :"09132862170" ,
+  "password" : "12345678904",
+  "confirm_password" :"12345678904" 
+}
+
+### step 53: login request hamishe beine header va body ye khat fasele bzar
+Post http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "userName" : "ehsan1" ,
+  "password" : "12345678904"
 }
