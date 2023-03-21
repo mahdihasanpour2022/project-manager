@@ -13,7 +13,7 @@ Content-Type: application/json
 ### step 53: login request hamishe beine header va body ye khat fasele bzar
 Post http://localhost:3000/auth/login
 Content-Type: application/json
-Authorization: Bearer ${{$dotenv token}}
+Authorization: Bearer {{$dotenv token}}
 
 {
   "userName" : "ehsan1" ,
