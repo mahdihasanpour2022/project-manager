@@ -5,5 +5,6 @@ const router = express.Router();
 const { autoLogin } = require("../http/middlewares/autoLogin");
 // step 63 :
 router.get("/profile", autoLogin, UserController.getProfile);
-
+// step 65 :
+router.post("/profile", autoLogin, UserController.editProfile);
 module.exports = { userRoutes: router };

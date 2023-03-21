@@ -27,7 +27,7 @@ module.exports = class Application {
     mongoose.connect(DB_URL, (error) => {
       // if(error) throw error ;
       if (error) {
-        console.log("error ------------------->", error);
+        // console.log("error ------------------->", error);
         return true;
       }
       return console.log("mongoose Connected to mongoDB successfully ...");

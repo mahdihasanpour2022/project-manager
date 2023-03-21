@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     mobile: { type: String, required: true, unique: true },
-    team: { type: [String], default: [] },
+    team: { type: [mongoose.Types.ObjectId], default: [] },
     skills: { type: [String], default: [] },
     roles: { type: [String], default: ["USERS"] }, // kolan maghadire pishfarzo baiad bozorg benevisi esmesho
     token: { type: String, default: "" },
