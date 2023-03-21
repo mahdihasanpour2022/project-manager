@@ -5,7 +5,7 @@
 
 const { userModel } = require("../../models/user");
 const { hashString, tokenGenerator } = require("../../modules/functions");
-const  bcrypt  = require("bcrypt");
+const bcrypt = require("bcrypt");
 class AuthController {
   // step 29 : create method bar asase oop (object oriented programing) iani ba class
   // vaghti vorodihat shamele ( req / res / next ) ye middleware mamolie ba req shoma joiate darkhste karbar mesle body ro darin
@@ -46,17 +46,22 @@ class AuthController {
     try {
       const { userName, password } = req.body;
       const user = await userModel.findOne({ userName });
-      if (!user) throw { status: 401, message: "نام کاربری یا رمز عبور اشتباه است ." };
+      if (!user)
+        throw { status: 401, message: "نام کاربری یا رمز عبور اشتباه است ." };
       // jahate moghaiese do meghdar chon hash shode nemishe sade moghaiese kard
 
       // step 57 : create token with userName payload k hamishe sabete va tamam nemishe
       const compareResult = bcrypt.compareSync(password, user.password);
-      if (!compareResult) throw { status: 401, message: "نام کاربری یا رمز عبور اشتباه است ." };
+      if (!compareResult)
+        throw { status: 401, message: "نام کاربری یا رمز عبور اشتباه است ." };
+      const token = tokenGenerator({ userName });
+      user.token = token;
+      await user.save();
       return res.status(200).json({
-        status: 200 ,
-        success: true ,
-        message: "شما با موفقیت وارد حساب کاربری خود شدید" ,
-        token : ''
+        status: 200,
+        success: true,
+        message: "ورود موفق شما به حساب کاربری",
+        token,
       });
     } catch (error) {
       next(error);

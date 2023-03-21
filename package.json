@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/mahdihasanpour2022/project-manager#readme",
   "scripts": {
-    "start": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
